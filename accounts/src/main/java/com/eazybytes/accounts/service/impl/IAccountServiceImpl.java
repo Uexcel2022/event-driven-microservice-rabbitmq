@@ -1,5 +1,6 @@
 package com.eazybytes.accounts.service.impl;
 
+import com.eazybytes.accounts.dto.AccountMsgDto;
 import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.entity.Account;
 import com.eazybytes.accounts.entity.Customer;
@@ -11,6 +12,9 @@ import com.eazybytes.accounts.repository.AccountRepository;
 import com.eazybytes.accounts.repository.CustomerRepository;
 import com.eazybytes.accounts.service.IAccountService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +24,9 @@ public class IAccountServiceImpl implements IAccountService {
 
     private final AccountRepository accountRepository;
     private final CustomerRepository customerRepository;
+    private final StreamBridge streamBridge;
+
+    private final Logger logger = LoggerFactory.getLogger(IAccountServiceImpl.class);
 
     /**
      * @param customerDto - Customer Object
@@ -31,12 +38,12 @@ public class IAccountServiceImpl implements IAccountService {
                 .existsByMobileNumber(customerDto.getMobileNumber())) {
             throw new InvalidArgException(
                     String.format("Mobile number %s has been used.", customerDto.getMobileNumber())
-
             );
         }
         Customer customer =  CustomerMapper.mapToCustomer(customerDto,new Customer());
         Customer createdCustomer = customerRepository.save( customer);
-        accountRepository.save(getNewAccount(createdCustomer));
+        Account account = accountRepository.save(getNewAccount(createdCustomer));
+        sendCommunication(account,createdCustomer);
     }
 
     /**
@@ -120,5 +127,32 @@ public class IAccountServiceImpl implements IAccountService {
         return false;
     }
 
+    private void  sendCommunication(Account account, Customer customer){
+        AccountMsgDto accountMsgDto = new
+                AccountMsgDto(account.getAccountNumber(),
+                customer.getName(), customer.getEmail(), customer.getMobileNumber());
+        logger.info("Sending communication request for the details:  {}",accountMsgDto);
+        var result =  streamBridge.send("sendCommunication-out-0", accountMsgDto);
+        logger.info("Is the communication request triggered successfully?: {}", result);
+    }
+
+
+    /**
+     * @param accountNumber - accountNumber
+     * @return boolean
+     */
+    @Override
+    public boolean updateComminucationStatus(Long accountNumber) {
+        boolean isUpdated = false;
+        if(accountNumber != null) {
+            Account account = accountRepository.findByAccountNumber(accountNumber)
+                    .orElseThrow(() -> new
+                            ResourceNotFoundException("Account", "accountNumber", Long.toString(accountNumber)));
+            account.setCommunicationSw(true);
+            accountRepository.save(account);
+            isUpdated = true;
+        }
+        return  isUpdated;
+    }
 
 }

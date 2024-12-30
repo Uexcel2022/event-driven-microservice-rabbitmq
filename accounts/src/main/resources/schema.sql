@@ -14,6 +14,7 @@ create  table  if not exists `account`(
     `account_number` int auto_increment primary key,
     `account_type` varchar(100) not null,
     `branch_address` varchar(100) not null,
+    `communication_sw` Boolean,
     `created_at` date not null,
     `created_by` varchar(100) not null,
     `updated_at` date default null,

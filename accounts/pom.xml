@@ -41,6 +41,17 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+		<!--		This includes spring cloud function-context dependencies-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream</artifactId>
+		</dependency>
+
+		<!-- even broker-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>io.opentelemetry.javaagent</groupId>
 			<artifactId>opentelemetry-javaagent</artifactId>
@@ -122,7 +133,7 @@
 				<version>3.4.2</version>
 				<configuration>
 					<to>
-						<image>uexcel247/${project.artifactId}:s11</image>
+						<image>uexcel247/${project.artifactId}:s12</image>
 					</to>
 				</configuration>
 			</plugin>

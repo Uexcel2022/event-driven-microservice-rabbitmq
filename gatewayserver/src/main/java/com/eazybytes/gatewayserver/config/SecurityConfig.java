@@ -1,6 +1,6 @@
 package com.eazybytes.gatewayserver.config;
 
-import com.eazybytes.gatewayserver.KeycloakRoleConverter;
+import com.eazybytes.gatewayserver.config.converter.KeycloakRoleConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;

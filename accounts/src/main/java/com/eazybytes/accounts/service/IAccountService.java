@@ -32,6 +32,14 @@ public interface IAccountService {
      */
     boolean deleteCustomer(String mobileNumber);
 
+
+    /**
+     * @param accountNumber  - accountNumber
+     * @return - boolean
+     */
+    boolean updateComminucationStatus(Long accountNumber);
+
+
     /**
      * @param customer - Custer Object
      * @return new account details
