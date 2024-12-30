@@ -1,0 +1,12 @@
+
+build:
+  version: "1.5"
+
+card:
+  message: "Welcome to EazyBank Card related local APIs in QA Environment"
+  contactDetails:
+    name: "Kelvin Suito - QA Lead"
+    email: "john@eazybank.com"
+  onCallSupport:
+    - (552) 552-1232
+    - (552) 522-1342

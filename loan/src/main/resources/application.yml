@@ -1,0 +1,76 @@
+spring:
+  application:
+    name: loan
+  h2:
+    console:
+      enabled: true
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    username: admin
+    password: ''
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  profiles:
+    active: prod
+
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+#  optional:configserver:http://localhost:8071/ - add optional when the file is not that important
+server:
+  port: 8090
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
+
+    health:
+      probes:
+        enabled: true
+
+  health:
+    liveness-state:
+      enabled: true
+    readiness-state:
+      enabled: true
+
+  info:
+    env:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+endpoints:
+  shutdown:
+    enabled: true
+
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8070/eureka/
+
+info:
+  app:
+    name: "loan"
+    description: "Eazy Bank Loan Application"
+    version: "1.0.0"
+logging:
+  level:
+    com:
+      eazybytes:
+        loan: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"

@@ -1,0 +1,10 @@
+build:
+  version: "3.0"
+loan:
+  message: "Welcome to EazyBank Loan related local production APIs"
+  contactDetails:
+    name: "Samson Michael - Product Owner"
+    email: "samson23@eazybank.com"
+  onCallSupport:
+    - (529) 555-1204
+    - (552) 523-1945

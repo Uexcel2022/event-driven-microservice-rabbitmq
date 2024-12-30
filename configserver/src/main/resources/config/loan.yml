@@ -1,0 +1,11 @@
+build:
+  version: "1.0"
+
+loan:
+  message: "Welcome to EazyBank Loan related local APIs"
+  contactDetails:
+    name: "Ibrahim Lokua - Developer"
+    email: "ibrahlokua@eazybank.com"
+  onCallSupport:
+    - (551) 555-1244
+    - (551) 523-1341
